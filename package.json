@@ -1,0 +1,8 @@
+{
+  "name": "ppe-lab",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "node -e \"console.log('build step')\"",
+    "deploy": "node -e \"console.log('NORMAL DEPLOY: no secrets here')\""
+  }
+}

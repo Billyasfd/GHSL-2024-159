@@ -1,0 +1,29 @@
+name: Deploy Docs (vulnerable)
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the commit that triggered the Build workflow
+        uses: actions/checkout@v4
+        with:
+          # intentionally vulnerable: checks out the HEAD SHA of the triggering workflow run
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Show where we are
+        run: |
+          echo "Checked out commit:"
+          git rev-parse --short HEAD
+          ls -la
+
+      - name: Run deploy script (this is where attacker-controlled script would run)
+        run: npm run deploy
+        env:
+          # DO NOT use a real secret here in the lab — dummy only
+          FAKE_TOKEN: test123
